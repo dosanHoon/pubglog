@@ -1,0 +1,2 @@
+# pubglog
+hybrid app 
