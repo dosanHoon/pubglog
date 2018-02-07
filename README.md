@@ -1,4 +1,5 @@
 # pubglog
+<<<<<<< HEAD
 
 vue X ionic
 
@@ -36,3 +37,8 @@ npm run dev
 # build for production with minification
 npm run build
 ```
+=======
+hybrid app 
+
+배틀그라운드 전적 검색 사이트
+>>>>>>> 4d53e25e2195ae3f5a41da3bdc1eebc37494d112
