@@ -1,6 +1,12 @@
 <template>
-    <li>
-        <input type="text"/>  
+    <li>        
+        <input type="checkbox" v-model="isComplted"/>
+        <input type="text" v-model="text" :disabled="isComplted || !isEditable"/>
+        <button v-if="!isComplted && !isEditable" v-on:click="isEditable = !isEditable">수정</button>
+        <div v-else-if="!isComplted && isEditable">
+          <button v-on:click="isEditable = !isEditable">등록</button>
+          <button v-on:click="isEditable = !isEditable">삭제</button>
+        </div>
     </li>
 </template>
 
@@ -12,12 +18,15 @@ export default {
       text: "Welcomeasdasd to Your Vue.js App",
       toDoValue: "",
       isComplted: false,
-      isEditable: true
+      isEditable: false,
+      inputCondition : this.isComplted && this.isEditable
     };
   }
 };
 </script>
 
 <style scoped>
+  li{
 
+  }
 </style>

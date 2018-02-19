@@ -1,20 +1,20 @@
 <template>
-  <div id="app">    
-    <router-view/>
+  <div id="app">  
+    <h1>{{$route.name}}</h1>      
     <ul>
-    <li v-for="item in items">
-      <a :href="item.path">
-        {{item.name}}
-      </a>
-    </li>
+      <li v-for="(item , index) in items" :key="index">
+        <a :href="item.path">
+          {{item.name}}
+        </a>
+      </li>
     </ul>
+    <router-view/>
   </div>
 </template>
 
 <script>
 // TODO
-var pubgApiUrl =
-  "https://pubg.op.gg/api/users/59fe35bdf5bab40001810631/ranked-stats?season=2018-01&server=krjp&queue_size=1&mode=tpp";
+var pubgApiUrl = "";
 
 export default {
   name: "app",
@@ -62,11 +62,17 @@ export default {
   margin: 0 auto;
   padding-bottom: 65px;
   min-height: 950px;
+
+  display: flex;
+  flex-direction:column;
 }
+
 
 h1,
 h2 {
   font-weight: normal;
+  color:white;
+  margin: 0;
 }
 
 ul {

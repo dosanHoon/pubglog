@@ -28,7 +28,14 @@ export default {
 
 <style scoped>
 .container{
-    background-color:rgba(0, 0, 0, 0.5);
+    background-color:rgba(255, 255, 255, 0.8);
     border-radius: 20PX 20PX 0 0;
+    width: 50%;
+    flex: 1;
+    position: relative;
+    margin: 0 auto;
+    height: 100%;
+    align-items : center;
+    /* min-height: 950px; */
 }
 </style>
