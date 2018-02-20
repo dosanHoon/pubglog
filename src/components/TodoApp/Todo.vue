@@ -3,10 +3,10 @@
         <input type="checkbox" v-model="isComplted"/>
         <input type="text" v-model="text" :disabled="isComplted || !isEditable"/>
         <button v-if="!isComplted && !isEditable" v-on:click="isEditable = !isEditable">수정</button>
-        <div v-else-if="!isComplted && isEditable">
+        <template v-else-if="!isComplted && isEditable">
           <button v-on:click="isEditable = !isEditable">등록</button>
           <button v-on:click="isEditable = !isEditable">삭제</button>
-        </div>
+        </template>
     </li>
 </template>
 
@@ -19,14 +19,13 @@ export default {
       toDoValue: "",
       isComplted: false,
       isEditable: false,
-      inputCondition : this.isComplted && this.isEditable
+      inputCondition: this.isComplted && this.isEditable
     };
   }
 };
 </script>
 
 <style scoped>
-  li{
-
-  }
+li {
+}
 </style>
