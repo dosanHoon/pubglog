@@ -34,6 +34,7 @@ export default {
     flex: 1;
     position: relative;
     margin: 0 auto;
+    padding: 20px;
     height: 100%;
     align-items : center;
     /* min-height: 950px; */
