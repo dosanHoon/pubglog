@@ -4,7 +4,7 @@
         <label for="completed">
           <icon :name="iconName"></icon>
         </label>
-        <input type="text" v-model="text" :disabled="isComplted" :class="isComplted&&'underline'"/>
+        <input type="text" v-bind:value="todo.toDoValue" :disabled="isComplted" :class="isComplted&&'underline'"/>
         <template v-if="!isComplted">
           <button v-if="!isEditable" v-on:click="handleEditable">
             <icon name="edit"></icon>
@@ -24,6 +24,7 @@
 <script>
 export default {
   name: "todolist",
+  props : ['todo'],
   data() {
     return {
       text: "할일",

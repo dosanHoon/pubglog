@@ -1,42 +1,66 @@
 <template>
     <div class="container">
-        <input type="text"/>
+        <input type="text" v-model="toDoValue"/>
+        <p>{{toDoValue}}</p>
+        <Button @click="addTodo">등록</Button>
         <ul>
-            <Todo/>
+            <Todo v-bind:todo="todo" v-for="(todo,index) in todoList" :key="index"/>
         </ul>
     </div>
 </template>
 
 <script>
-import Todo from './Todo.vue'
+import Todo from "./Todo.vue";
+import uuidv1 from "uuid/v1";
 
 export default {
   name: "todolist",
   data() {
     return {
-      text: "Welcomeasdasd to Your Vue.js App",
-      toDoValue : "",
-      isComplted : false,
-      isEditable : true
+      toDoValue: "dsds",
+      todoList: JSON.parse(localStorage.getItem("todoList"))
     };
   },
-  components : {
-      Todo
+  methods: {
+    addTodo() {
+      let todoList = JSON.parse(localStorage.getItem("todoList"));
+      todoList = !Boolean(todoList) ? {} : todoList;
+      const id = uuidv1();
+      let newTodo = {};
+      newTodo[id] = {
+        id: id,
+        toDoValue: this.toDoValue,
+        registedDate: new Date(),
+        updateDate: new Date(),
+        idComplted: false
+      };
+
+      localStorage.setItem(
+        "todoList",
+        JSON.stringify({
+          ...todoList,
+          ...newTodo
+        })
+      );
+    }
+  },
+  components: {
+    Todo
   }
 };
 </script>
 
 <style scoped>
-.container{
-    background-color:rgba(255, 255, 255, 0.8);
-    border-radius: 20PX 20PX 0 0;
-    width: 50%;
-    flex: 1;
-    position: relative;
-    margin: 0 auto;
-    padding: 20px;
-    height: 100%;
-    align-items : center;
-    /* min-height: 950px; */
+.container {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 20px 20px 0 0;
+  width: 50%;
+  flex: 1;
+  position: relative;
+  margin: 0 auto;
+  padding: 20px;
+  height: 100%;
+  align-items: center;
+  /* min-height: 950px; */
 }
 </style>
