@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <input type="text" v-model="toDoValue"/>
-        <p>{{toDoValue}}</p>
         <Button @click="addTodo">등록</Button>
         <ul>
             <Todo v-bind:todo="todo" v-for="(todo,index) in todoList" :key="index"/>
@@ -17,16 +16,17 @@ export default {
   name: "todolist",
   data() {
     return {
-      toDoValue: "dsds",
-      todoList: JSON.parse(localStorage.getItem("todoList"))
+      toDoValue: "",
+      todoList: {}
     };
   },
   methods: {
     addTodo() {
-      let todoList = JSON.parse(localStorage.getItem("todoList"));
-      todoList = !Boolean(todoList) ? {} : todoList;
+      let todoList = this.todoList
+      todoList = !todoList ? {} : todoList;
       const id = uuidv1();
       let newTodo = {};
+
       newTodo[id] = {
         id: id,
         toDoValue: this.toDoValue,
@@ -35,14 +35,18 @@ export default {
         idComplted: false
       };
 
-      localStorage.setItem(
-        "todoList",
-        JSON.stringify({
-          ...todoList,
-          ...newTodo
-        })
-      );
+      let newTodoList = {
+        ...todoList,
+        ...newTodo
+      };
+
+      localStorage.setItem("todoList", JSON.stringify(newTodoList));
+
+      this.todoList = newTodoList;
     }
+  },
+  mounted: function() {
+    this.todoList = JSON.parse(localStorage.getItem("todoList"));
   },
   components: {
     Todo

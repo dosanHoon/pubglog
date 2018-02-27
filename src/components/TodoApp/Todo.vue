@@ -24,7 +24,7 @@
 <script>
 export default {
   name: "todolist",
-  props : ['todo'],
+  props: ["todo"],
   data() {
     return {
       text: "할일",
@@ -43,31 +43,34 @@ export default {
     isComplted: function(val) {
       this.iconName = val ? "check-circle" : "circle";
     }
+  },
+  mounted: () => {
+    console.log("todo mounted");
   }
 };
 </script>
 
 <style scoped>
-icon{
-  color: #e23565
+icon {
+  color: #e23565;
 }
-input[type="checkbox"]{
-  display: none
+input[type="checkbox"] {
+  display: none;
 }
-button{
-  background: none;
-  border :0;
-}
-input[type="text"]{
+button {
   background: none;
   border: 0;
 }
-li{
+input[type="text"] {
+  background: none;
+  border: 0;
+}
+li {
   border-bottom: 1px solid #9e9eca;
-  margin : 10px 0;
+  margin: 10px 0;
   padding: 5px;
 }
-.underline{
+.underline {
   text-decoration: line-through;
 }
 </style>

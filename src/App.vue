@@ -1,5 +1,5 @@
 <template>
-  <div id="app">  
+  <div id="app">
     <h1>{{$route.name}}</h1>      
     <ul>
       <li v-for="(item , index) in items" :key="index">
