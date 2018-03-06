@@ -6,14 +6,14 @@
         </label>
         <input type="text" v-bind:value="todo.toDoValue" :disabled="isComplted" :class="isComplted&&'underline'"/>
         <template v-if="!isComplted">
-          <button v-if="!isEditable" v-on:click="handleEditable">
+          <button v-if="!isEditable" @click="handleEditable">
             <icon name="edit"></icon>
           </button>
           <template v-else-if="isEditable">
-            <button v-on:click="handleEditable">
+            <button @click="handleEditable">
               <icon name="pencil"></icon>
             </button>
-            <button v-on:click="handleEditable">
+            <button @click="deleteTodo(todo.id)">
               <icon name="trash"></icon>
             </button>
           </template>
@@ -24,7 +24,7 @@
 <script>
 export default {
   name: "todolist",
-  props: ["todo"],
+  props: ["todo","deleteTodo"],
   data() {
     return {
       text: "할일",
