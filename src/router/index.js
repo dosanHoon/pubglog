@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
+import Pubglog from '@/components/Pubglog'
 import TodoList from '@/components/TodoApp/TodoList'
 
 Vue.use(Router)
@@ -15,9 +16,9 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path: '/Login',
-      name: 'Login',
-      component: Login
+      path: '/pubglog',
+      name: 'pubglog',
+      component: Pubglog
     },
     {
       path: '/search',
