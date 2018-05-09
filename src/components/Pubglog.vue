@@ -8,47 +8,71 @@
   </select>
   <input v-model="nickname"/>
   <button v-on:click="searchLog">검색</button>
+  <ul>
+    <!-- <li v-for="match in matches">
+      {{ match.id}}
+    </li> -->
+    <Match
+    :userStat="currentUserStat"
+    />
+    <!-- <Match v-for="match in matches" key="match"/> -->
+  </ul>
   </div>
 </template>
 
 <script>
+import Match from "./Match.vue";
+
 export default {
-  name: "Login",
+  name: "PubgLog",
   data() {
     return {
-      nickname: "what is your nickName?",
-      country: "pc-as"
+      nickname: "닉네임을 입력 해주세요",
+      country: "pc-as",
+      matches: [],
+      currentUserStat: {}
     };
+  },
+  components: {
+    Match
   },
   methods: {
     searchLog: function() {
-      console.log("nickname", this.nickname);
-      //TODO
-      // this.$http.headers.common["Authorization"] =
-      //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2NjFlZmMwMC0xOTE1LTAxMzYtZWVhZC00YjgzYjRkZTM4NzUiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTIyNzIyODQ0LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InB1Ymdsb2ctYTM5MjkxODEtNGYxOS00N2UxLWEwZmYtYjlmOTRhNzQ1ZGMzIiwic2NvcGUiOiJjb21tdW5pdHkiLCJsaW1pdCI6MTB9.zztYrvx6FM-MFVjWvtPC-bC-hjuHqy7jbm85fBSyfpY";
-      // this.$http.headers.common["Accept"] = "application/vnd.api+json";
-
       let pubgApiUrl = `https://api.playbattlegrounds.com/shards/${
         this.country
       }/players?filter[playerNames]=${this.nickname}`;
 
       this.$http.get(pubgApiUrl).then(response => {
-        console.log("response", response);
-        this.message = response.data.message;
+        let matches = response.body.data[0].relationships.matches.data;
+        // matches.forEach(({ id }) => {
+        this.callMatchInfo(matches[0].id);
+        // });
+      });
+    },
+
+    callMatchInfo: function(id) {
+      let pubgApiUrl = `https://api.playbattlegrounds.com/shards/${
+        this.country
+      }/matches/${id}`;
+
+      this.$http.get(pubgApiUrl).then(response => {
+        this.matches.push(response.body.included);
+        this.getCurrentUserStats();
+      });
+    },
+
+    getCurrentUserStats: function() {
+      console.log("this.matches", this.matches);
+      let userStats = this.matches[0].filter(({ attributes }) => {
+        console.log("attributes", attributes);
+        if (attributes.stats) {
+          let { name } = attributes.stats;
+
+          return name === this.nickname;
+        }
       });
 
-      // axios
-      //   .get(pubgApiUrl + nickname, "", {
-      //     headers: {
-      //       Authorization:
-      //         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2NjFlZmMwMC0xOTE1LTAxMzYtZWVhZC00YjgzYjRkZTM4NzUiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTIyNzIyODQ0LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InB1Ymdsb2ctYTM5MjkxODEtNGYxOS00N2UxLWEwZmYtYjlmOTRhNzQ1ZGMzIiwic2NvcGUiOiJjb21tdW5pdHkiLCJsaW1pdCI6MTB9.zztYrvx6FM-MFVjWvtPC-bC-hjuHqy7jbm85fBSyfpY",
-      //       Accept: "application/vnd.api+json"
-      //     }
-      //   })
-      //   .then(response => {
-      //     console.log("response", response);
-      //     this.message = response.data.message;
-      //   });
+      this.currentUserStat = userStats[0].attributes.stats;
     }
   }
 };
