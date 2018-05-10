@@ -62,12 +62,9 @@ export default {
     },
 
     getCurrentUserStats: function() {
-      console.log("this.matches", this.matches);
       let userStats = this.matches[0].filter(({ attributes }) => {
-        console.log("attributes", attributes);
         if (attributes.stats) {
           let { name } = attributes.stats;
-
           return name === this.nickname;
         }
       });
