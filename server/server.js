@@ -1,7 +1,20 @@
 var express = require('express')
 var app = express()
-var router = require('./router/main')(app)
+var bodyParser = require('body-parser')
 var path = require('path')
+var mongoose = require('mongoose')
+
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+
+var router = require('./router/main')(app)
+
+mongoose.connect('mongodb://localhost:27017/pubg_log')
+var db = mongoose.connection
+
+db.once('open', () => {
+  console.log('몽구스와 연결됨')
+})
 
 app.set('views', path.join(__dirname, '../dist'))
 app.set('view engine', 'ejs')
