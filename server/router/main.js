@@ -1,9 +1,9 @@
-module.exports = function (app) {
-  app.get('/', function (req, res) {
-    res.render('index.html')
-  })
+var page = require('./page')
+var api = require('./api/user')
+var newPubg = require('./api/newPubg')
 
-  app.get('/pubglog', function (req, res) {
-    res.render('index.html')
-  })
+module.exports = function (app) {
+  api(app)
+  page(app)
+  newPubg(app)
 }
