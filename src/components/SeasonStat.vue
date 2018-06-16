@@ -24,18 +24,18 @@
             </div>
         </div>
         <ul class="season_stats list wraper clear">
-          <li class="season_stats list item top">
-            <div class="">
-              <span class="">킬수</span>
-            </div>
-            <div class="highlight">{{userStat.kills}} </div>
-          </li>
-          <li class="season_stats list item top">
-            <div class="">
-              <span class="">K/D</span>
-            </div>
-            <div class="highlight">{{(userStat.kills / userStat.roundsPlayed).toFixed(1)}} </div>
-          </li>
+          <ValueItem
+            name="킬수"
+            :value="userStat.kills"
+            highlight="true"
+            top="true"
+          />
+          <ValueItem
+            name="K/D"
+            :value="(userStat.kills / userStat.roundsPlayed).toFixed(1)"
+            highlight="true"
+            top="true"
+          />
           <ValueItem
             name="팀킬"
             :value="userStat.teamKills"
@@ -88,9 +88,7 @@ h4 {
   margin: 0;
   padding: 0;
 }
-.highlight {
-  color: orange;
-}
+
 .clear:after {
   clear: both;
   display: block;
