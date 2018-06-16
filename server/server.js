@@ -3,7 +3,9 @@ var app = express()
 var bodyParser = require('body-parser')
 var path = require('path')
 var mongoose = require('mongoose')
+var cors = require('cors')
 
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
