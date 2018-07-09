@@ -19,7 +19,7 @@ module.exports = function (app) {
     let result = []
     let resultMatch
     let MatchesId
-
+    let apiCallCount
     https
       .request(options, function (response) {
         response
@@ -30,13 +30,8 @@ module.exports = function (app) {
             let data = Buffer.concat(result).toString()
             resultMatch = JSON.parse(data)
             MatchesId = resultMatch.data.relationships.matches.data
-
-            // MatchesId.forEach(({ id }, index) => {
-            //   options.path = `/shards/${country}/matches/${id}`
-            //   sendRequest(options, index)
-            // })
-
-            async.times(5, sendRequestWrapper, () => {
+            apiCallCount = MatchesId.length > 5 ? 5 : MatchesId.length
+            async.times(apiCallCount, sendRequestWrapper, () => {
               console.log('done')
             })
           })
@@ -66,7 +61,7 @@ module.exports = function (app) {
               let data = Buffer.concat(requestResult).toString()
               resultMatchInfo = JSON.parse(data)
               responseResult.push(resultMatchInfo)
-              if (responseResult.length >= 5) {
+              if (responseResult.length >= apiCallCount) {
                 res.json(responseResult)
               }
             })
