@@ -8,7 +8,7 @@
             {{userStat.roundsPlayed}} 게임
           </div>
         </div>
-        <div>
+        <template v-if="userStat.roundsPlayed != 0">
           <div class="card_content">
             <div class="stats_head">
               <div class="stats_rating">
@@ -22,7 +22,7 @@
                 <span class="ranked-stats__bar ranked-stats__bar--solo" style="width: 21.348589670147817%"></span>
               </div>
             </div>
-        </div>
+          </div>
         <ul class="season_stats list wraper clear">
           <ValueItem
             name="킬수"
@@ -50,7 +50,7 @@
           />
           <ValueItem
             name="헤드샷"
-            :value="`${(userStat.headshotKills / userStat.kills * 100).toFixed(1)}%`"
+            :value="`${this.headShotRate}%`"
           />
           <ValueItem
             name="고라니"
@@ -61,7 +61,10 @@
             :value="userStat.roundMostKills"
           />
         </ul>
-      </div>
+        </template>
+        <div class="no_game card_content" v-if="userStat.roundsPlayed == 0">
+          <p>게임이 없습니다.</p>
+        </div>
       </div>
 </template>
 
@@ -73,6 +76,21 @@ export default {
   props: ['userStat', 'mode'],
   components: {
     ValueItem
+  },
+  computed: {
+    headShotRate: function() {
+      let headShot
+      if (this.userStat.kills != 0) {
+        headShot = (
+          this.userStat.headshotKills /
+          this.userStat.kills *
+          100
+        ).toFixed(1)
+      } else {
+        headShot = 0
+      }
+      return headShot
+    }
   }
 }
 </script>
