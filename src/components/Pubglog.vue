@@ -31,8 +31,13 @@
     />
     </ul>
     <div class="matchs_container" v-if="isEmpty">
+      <h1>최근 경기
+        </h1>
       <ul>
-
+        <Match v-for="match in matches" v-bind:key="match.id"
+          :matchInfo="match"
+          :pubgId="pubgId"
+        />
       </ul>
     </div>
   </div>
@@ -52,7 +57,6 @@ export default {
       season: '',
       seasons: [],
       matches: [],
-      currentUserStat: {},
       userSeasonStat: {}
     }
   },
@@ -66,7 +70,6 @@ export default {
     SeasonStat
   },
   created() {
-    console.log('process.env.APIURL', process.env.APIURL)
     this.$http
       .get(`${process.env.APIURL}/seasons?country=${this.country}`)
       .then(response => {
@@ -74,7 +77,14 @@ export default {
       })
   },
   methods: {
+    initData: function() {
+      this.matches = []
+      this.pubgId = ''
+      this.userSeasonStat = {}
+    },
     getIdByNickName: function() {
+      this.initData()
+
       let pubgApiUrl = `${process.env.APIURL}/pubgId`
 
       this.$http
@@ -85,7 +95,6 @@ export default {
           }
         })
         .then(response => {
-          console.log(response)
           if (response.data.returnCode === 0) {
             this.pubgId = response.data.resultValue
             this.callSeasonStats()
@@ -122,48 +131,8 @@ export default {
           }
         })
         .then(response => {
-          console.log('response')
           this.matches = response.data
         })
-    },
-    // searchLog: function() {
-    //   let pubgApiUrl = `${process.env.APIURL}/newPubg`
-
-    //   this.$http
-    //     .get(pubgApiUrl, {
-    //       params: {
-    //         country: this.country,
-    //         nickname: this.nickname
-    //       }
-    //     })
-    //     .then(response => {
-    //       let matches = response.body.data[0].relationships.matches.data
-    //       // matches.forEach(({ id }) => {
-    //       this.callMatchInfo(matches[0].id)
-    //       // });
-    //     })
-    // },
-
-    // callMatchInfo: function(id) {
-    //   let pubgApiUrl = `https://api.playbattlegrounds.com/shards/${
-    //     this.country
-    //   }/matches/${id}`
-
-    //   this.$http.get(pubgApiUrl).then(response => {
-    //     this.matches.push(response.body.included)
-    //     this.getCurrentUserStats()
-    //   })
-    // },
-
-    getCurrentUserStats: function() {
-      let userStats = this.matches[0].filter(({ attributes }) => {
-        if (attributes.stats) {
-          let { name } = attributes.stats
-          return name === this.nickname
-        }
-      })
-
-      this.currentUserStat = userStats[0].attributes.stats
     }
   }
 }
@@ -181,14 +150,13 @@ ul {
 }
 
 .season_stat_container {
-  margin-top: 8px;
+  margin-top: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 li {
-  display: inline-block;
   margin: 0 10px;
 }
 a {
@@ -196,5 +164,12 @@ a {
 }
 h1 {
   color: white;
+}
+.matchs_container {
+  margin: 10px;
+}
+
+.matchs_container li {
+  margin-bottom: 10px;
 }
 </style>
