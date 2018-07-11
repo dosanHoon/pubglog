@@ -57,11 +57,16 @@ module.exports = function (app) {
               requestResult.push(data)
             })
             .on('end', function () {
-              console.log('end', index)
               let data = Buffer.concat(requestResult).toString()
               resultMatchInfo = JSON.parse(data)
               responseResult.push(resultMatchInfo)
               if (responseResult.length >= apiCallCount) {
+                responseResult.sort((a, b) => {
+                  return (
+                    new Date(b.data.attributes.createdAt) -
+                    new Date(a.data.attributes.createdAt)
+                  )
+                })
                 res.json(responseResult)
               }
             })
