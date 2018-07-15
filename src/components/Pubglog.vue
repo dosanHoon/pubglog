@@ -31,8 +31,7 @@
     />
     </ul>
     <div class="matchs_container" v-if="isEmpty">
-      <h1>최근 경기
-        </h1>
+      <h1>최근 경기</h1>
       <ul>
         <Match v-for="match in matches" v-bind:key="match.id"
           :matchInfo="match"
@@ -40,12 +39,17 @@
         />
       </ul>
     </div>
+    <div class="matchs_container" v-if="isEmpty">
+      <h1>경기 디테일</h1>
+      <MatchDetail/>
+    </div>
   </div>
 </template>
 
 <script>
 import Match from './Match.vue'
 import SeasonStat from './SeasonStat.vue'
+import MatchDetail from './MatchDetail.vue'
 
 export default {
   name: 'PubgLog',
@@ -67,7 +71,8 @@ export default {
   },
   components: {
     Match,
-    SeasonStat
+    SeasonStat,
+    MatchDetail
   },
   created() {
     this.$http
@@ -166,7 +171,10 @@ h1 {
   color: white;
 }
 .matchs_container {
-  margin: 10px;
+  padding: 10px;
+  width: 50%;
+  float: left;
+  box-sizing: border-box;
 }
 
 .matchs_container li {

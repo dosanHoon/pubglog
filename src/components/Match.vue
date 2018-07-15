@@ -3,8 +3,7 @@
       <div class="match_info_wrap item_column">
         <p>{{mapName}}</p>
         <p>{{matchInfo.data.attributes.gameMode}}</p>
-        <p>{{matchInfo.data.attributes.duration}}</p>
-        <p>{{matchInfo.data.attributes.createdAt}}</p>
+        <p>{{matchInfo.data.attributes.createdAt.substring(0,10)}}</p>
       </div>
       <template v-if="userStats">
         <div class="match_info_wrap item_column">
@@ -13,6 +12,7 @@
         </div>  
         <div class="match_info_wrap item_column">
           <p>데미지 : {{userStats.damageDealt.toFixed(0)}}</p>
+          <p>생존 시간 : {{(userStats.timeSurvived/60).toFixed(2)}} 분</p>
         </div>
       </template>
     </li>
