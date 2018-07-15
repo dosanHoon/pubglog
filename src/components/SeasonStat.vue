@@ -9,30 +9,16 @@
           </div>
         </div>
         <template v-if="userStat.roundsPlayed != 0">
-          <div class="card_content">
-            <div class="stats_head">
-              <div class="stats_rating">
-                {{userStat.rating}}
-              </div>
-              <div class="bottom clear">
-                <div class="stats_rank left">803,201위</div>
-                <div class="stats_rank right highlight">상위 79%</div>
-              </div>
-              <div class="ranked-stats__progress">
-                <span class="ranked-stats__bar ranked-stats__bar--solo" style="width: 21.348589670147817%"></span>
-              </div>
-            </div>
-          </div>
         <ul class="season_stats list wraper clear">
           <ValueItem
-            name="킬수"
-            :value="userStat.kills"
+            name="K/D"
+            :value="(userStat.kills / userStat.roundsPlayed).toFixed(1)"
             highlight="true"
             top="true"
           />
           <ValueItem
-            name="K/D"
-            :value="(userStat.kills / userStat.roundsPlayed).toFixed(1)"
+            name="평균 데미지"
+            :value="(userStat.damageDealt / userStat.roundsPlayed).toFixed(1)"
             highlight="true"
             top="true"
           />
@@ -59,6 +45,14 @@
           <ValueItem
             name="최다 킬"
             :value="userStat.roundMostKills"
+          />
+          <ValueItem
+            name="top10s"
+            :value="userStat.top10s"
+          />
+          <ValueItem
+            name="차량 폭파"
+            :value="userStat.vehicleDestroys"
           />
         </ul>
         </template>
