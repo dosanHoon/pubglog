@@ -50,6 +50,8 @@
 import Match from './Match.vue'
 import SeasonStat from './SeasonStat.vue'
 import MatchDetail from './MatchDetail.vue'
+import ajaxWrapper from '../module/ajaxWrapper'
+import apiUrls from '../module/apiUrls'
 
 export default {
   name: 'PubgLog',
@@ -75,11 +77,9 @@ export default {
     MatchDetail
   },
   created() {
-    this.$http
-      .get(`${process.env.APIURL}/seasons?country=${this.country}`)
-      .then(response => {
-        this.seasons = response.data.data
-      })
+    ajaxWrapper(apiUrls.callSeasons + this.country, 'get', response => {
+      this.seasons = response.data.data
+    })
   },
   methods: {
     initData: function() {
@@ -89,17 +89,10 @@ export default {
     },
     getIdByNickName: function() {
       this.initData()
-
-      let pubgApiUrl = `${process.env.APIURL}/pubgId`
-
-      this.$http
-        .get(pubgApiUrl, {
-          params: {
-            country: this.country,
-            nickname: this.nickname
-          }
-        })
-        .then(response => {
+      ajaxWrapper(
+        apiUrls.getIdByNickName,
+        'get',
+        response => {
           if (response.data.returnCode === 0) {
             this.pubgId = response.data.resultValue
             this.callSeasonStats()
@@ -107,37 +100,40 @@ export default {
           } else {
             this.nickname = '잘못된 닉네임 입니다.'
           }
-        })
+        },
+        {
+          country: this.country,
+          nickname: this.nickname
+        }
+      )
     },
     callSeasonStats: function() {
-      let pubgApiUrl = `${process.env.APIURL}/seasonStats`
-
-      this.$http
-        .get(pubgApiUrl, {
-          params: {
-            country: this.country,
-            season: this.season,
-            pubgId: this.pubgId
-          }
-        })
-        .then(response => {
+      ajaxWrapper(
+        apiUrls.callSeasonStats,
+        'get',
+        response => {
           this.userSeasonStat = response.data
-        })
+        },
+        {
+          country: this.country,
+          season: this.season,
+          pubgId: this.pubgId
+        }
+      )
     },
-    getMatches: function(id) {
-      let pubgApiUrl = `${process.env.APIURL}/getMatches`
-
-      this.$http
-        .get(pubgApiUrl, {
-          params: {
-            country: this.country,
-            season: this.season,
-            pubgId: this.pubgId
-          }
-        })
-        .then(response => {
+    getMatches: function() {
+      ajaxWrapper(
+        apiUrls.getMatches,
+        'get',
+        response => {
           this.matches = response.data
-        })
+        },
+        {
+          country: this.country,
+          season: this.season,
+          pubgId: this.pubgId
+        }
+      )
     }
   }
 }
